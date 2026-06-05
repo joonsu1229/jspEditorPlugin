@@ -1,0 +1,48 @@
+<idea-plugin>
+    <id>com.github.codex.jsp-lite</id>
+    <name>JSP Lite</name>
+    <vendor email="local@example.com">Codex</vendor>
+    <idea-version since-build="221"/>
+
+    <description><![CDATA[
+        Lightweight JSP editing support for IntelliJ IDEA Community Edition.
+        Provides file type recognition, JSP/HTML/EL highlighting, completion, comments, and include navigation.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="JSP Lite"
+                  implementationClass="com.github.codex.jsplite.JspLiteFileType"
+                  fieldName="INSTANCE"
+                  language="JSP Lite"
+                  extensions="jsp;jspf;jspx;tag;tagx"/>
+
+        <lang.parserDefinition
+                language="JSP Lite"
+                implementationClass="com.github.codex.jsplite.JspLiteParserDefinition"/>
+
+        <lang.syntaxHighlighterFactory
+                language="JSP Lite"
+                implementationClass="com.github.codex.jsplite.highlighting.JspLiteSyntaxHighlighterFactory"/>
+
+        <lang.commenter
+                language="JSP Lite"
+                implementationClass="com.github.codex.jsplite.editor.JspLiteCommenter"/>
+
+        <completion.contributor
+                language="JSP Lite"
+                implementationClass="com.github.codex.jsplite.completion.JspLiteCompletionContributor"/>
+
+        <colorSettingsPage
+                implementationClass="com.github.codex.jsplite.highlighting.JspLiteColorSettingsPage"/>
+
+        <psi.referenceContributor
+                implementation="com.github.codex.jsplite.navigation.JspLiteReferenceContributor"/>
+
+        <gotoDeclarationHandler
+                implementation="com.github.codex.jsplite.navigation.JspLiteGotoDeclarationHandler"/>
+
+    </extensions>
+</idea-plugin>
