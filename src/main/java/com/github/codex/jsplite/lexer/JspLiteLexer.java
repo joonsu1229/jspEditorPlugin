@@ -243,7 +243,7 @@ public final class JspLiteLexer extends LexerBase {
             return;
         }
         tokenType = JspLiteTokenTypes.TEXT;
-        tokenEnd = nextTopSpecial(tokenStart + 1);
+        tokenEnd = nextTopTextBoundary(tokenStart + 1);
         state = TOP;
     }
 
@@ -746,9 +746,10 @@ public final class JspLiteLexer extends LexerBase {
         return endOffset;
     }
 
-    private int nextTopSpecial(int from) {
+    private int nextTopTextBoundary(int from) {
         for (int i = from; i < endOffset; i++) {
             char c = buffer.charAt(i);
+            if (c == '\n' || c == '\r') return i;
             if (c == '<' || (c == '$' && i + 1 < endOffset && buffer.charAt(i + 1) == '{')
                     || (c == '#' && i + 1 < endOffset && buffer.charAt(i + 1) == '{')) return i;
         }
@@ -772,6 +773,7 @@ public final class JspLiteLexer extends LexerBase {
         if (line.isEmpty()) return false;
         if (line.startsWith("//") || line.startsWith("/*") || line.startsWith("*")) return true;
         if (line.startsWith("function ") || line.startsWith("var ") || line.startsWith("let ") || line.startsWith("const ")) return true;
+        if (line.equals("debugger") || line.equals("debugger;")) return true;
         if (line.startsWith("if ") || line.startsWith("if(") || line.startsWith("for ") || line.startsWith("for(")
                 || line.startsWith("while ") || line.startsWith("while(") || line.startsWith("switch ") || line.startsWith("switch(")
                 || line.startsWith("return ") || line.startsWith("try") || line.startsWith("catch ") || line.startsWith("catch(")) {
